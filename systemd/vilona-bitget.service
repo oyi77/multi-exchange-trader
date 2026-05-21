@@ -1,0 +1,18 @@
+[Unit]
+Description=1AI Trade Bot - Bitget Autonomous Trader
+After=network.target
+
+[Service]
+Type=simple
+User=openclaw
+WorkingDirectory=/home/openclaw/.openclaw/workspace
+ExecStart=/usr/bin/python3 /home/openclaw/1ai-trade-bot/bitget/autonomous_trader.py
+Restart=always
+RestartSec=30
+StandardOutput=append:/home/openclaw/.openclaw/workspace/logs/trading/vilona_bitget.log
+StandardError=append:/home/openclaw/.openclaw/workspace/logs/trading/vilona_bitget.log
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

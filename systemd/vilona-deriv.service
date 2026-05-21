@@ -1,0 +1,19 @@
+[Unit]
+Description=Vilona Deriv Actuary Daemon (Dashboard + Streamer)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=openclaw
+WorkingDirectory=/home/openclaw/.openclaw/workspace
+ExecStart=/home/openclaw/.openclaw/workspace/scripts/vilona_deriv_daemon.py
+Restart=always
+RestartSec=15
+StandardOutput=append:/home/openclaw/.openclaw/workspace/logs/deriv_actuary/daemon_service.log
+StandardError=append:/home/openclaw/.openclaw/workspace/logs/deriv_actuary/daemon_service.log
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

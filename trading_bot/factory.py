@@ -94,6 +94,31 @@ def get_exchange(
             leverage=config.get("leverage", 50),
         )
 
+    if provider == "deriv":
+        from trading_bot.exchange.deriv_exchange import DerivExchange
+
+        token = os.getenv("DERIV_TOKEN")
+        paper = mode != "real"
+        return DerivExchange(token=token, paper=paper)
+
+    if provider == "bitget":
+        from trading_bot.exchange.ccxt import CCXTExchange
+
+        api_key = os.getenv("BITGET_API_KEY")
+        api_secret = os.getenv("BITGET_API_SECRET")
+        passphrase = os.getenv("BITGET_PASSPHRASE")
+
+        if not api_key or not api_secret:
+            return None
+
+        return CCXTExchange(
+            exchange_name="bitget",
+            api_key=api_key,
+            api_secret=api_secret,
+            passphrase=passphrase,
+            testnet=(mode == "frontest"),
+        )
+
     return None
 
 

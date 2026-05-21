@@ -420,3 +420,33 @@ def calculate_position_size(
 
     # Minimum lot size
     return max(0.01, round(lots, 2))
+
+
+def zscore(arr, lookback=50):
+    """Z-score of last value vs recent window."""
+    import numpy as np
+
+    if len(arr) < lookback + 1:
+        return 0.0
+    window = arr[-lookback - 1:-1]
+    mu = np.mean(window)
+    sd = np.std(window) or 1e-9
+    return (arr[-1] - mu) / sd
+
+
+def calc_spread(price_long, price_short):
+    """Log spread between two prices."""
+    import numpy as np
+
+    return np.log(price_long / price_short)
+
+
+def zscore_spread(spread_history, min_obs=30, lookback=60):
+    """Z-score of spread history for pairs trading."""
+    import numpy as np
+
+    if len(spread_history) < min_obs:
+        return 0
+    arr = np.array(spread_history[-lookback:])
+    mu, sd = np.mean(arr), np.std(arr) or 1e-9
+    return (arr[-1] - mu) / sd
