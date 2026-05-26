@@ -1,8 +1,8 @@
 """
-Core interfaces for exchange providers
+Core interfaces for exchange providers and pluggable strategies/data sources.
 """
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Any, Dict, List, Optional
 
 
 class Exchange(ABC):
@@ -19,23 +19,23 @@ class Exchange(ABC):
         pass
     
     @abstractmethod
-    def get_positions(self, symbol: str = None) -> List[Dict]:
+    def get_positions(self, symbol: Optional[str] = None) -> List[Dict]:
         """Get open positions"""
         pass
-    
+
     @abstractmethod
     def open_position(self, symbol: str, side: str, volume: float,
-                      sl: float = None, tp: float = None) -> Optional[str]:
+                      sl: Optional[float] = None, tp: Optional[float] = None) -> Optional[str]:
         """Open a new position"""
         pass
-    
+
     @abstractmethod
     def close_position(self, ticket: str) -> bool:
         """Close a position by ticket"""
         pass
-    
+
     @abstractmethod
-    def modify_position(self, ticket: str, sl: float = None, tp: float = None) -> bool:
+    def modify_position(self, ticket: str, sl: Optional[float] = None, tp: Optional[float] = None) -> bool:
         """Modify position SL/TP"""
         pass
     

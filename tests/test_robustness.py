@@ -1,4 +1,8 @@
 import asyncio
+import os
+import socket
+
+import pytest
 from unittest.mock import AsyncMock, Mock, patch
 
 from trading_bot.interface.base import InterfaceConfig
@@ -484,6 +488,15 @@ def test_ostium_update_price_uses_sdk_pnl_metrics(monkeypatch):
     assert exchange.positions[0].liquidation_price == 4800.0
 
 
+def _port_in_use(port=8080):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(("127.0.0.1", port)) == 0
+
+
+@pytest.mark.skipif(
+    not os.environ.get("DISPLAY") or _port_in_use(),
+    reason="No display or port 8080 in use",
+)
 def test_web_interface_auto_opens_browser(monkeypatch):
     from trading_bot.interface.web import WebInterface
 

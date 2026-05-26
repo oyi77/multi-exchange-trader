@@ -26,6 +26,23 @@ class InvalidTransitionError(StrategyError):
         super().__init__(message, strategy)
 
 
+class GuardConditionError(StrategyError):
+    """Raised when a guard condition blocks a state transition."""
+
+    def __init__(
+        self,
+        message: str = "Guard condition failed",
+        strategy: str = "",
+        guard_name: str = "",
+        from_state: str = "",
+        to_state: str = "",
+    ) -> None:
+        self.guard_name = guard_name
+        self.from_state = from_state
+        self.to_state = to_state
+        super().__init__(message, strategy)
+
+
 class ConfigurationError(StrategyError):
     """Raised when strategy configuration is invalid or incomplete."""
 

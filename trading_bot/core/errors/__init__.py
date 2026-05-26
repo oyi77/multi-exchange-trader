@@ -3,7 +3,7 @@ Domain-specific exceptions.
 
 Typed error hierarchy for trading operations:
 - ExchangeError  → InsufficientBalanceError, ExchangeConnectionError, ExchangeTimeoutError
-- StrategyError  → InvalidTransitionError, ConfigurationError
+- StrategyError  → InvalidTransitionError, GuardConditionError, ConfigurationError
 """
 
 from trading_bot.core.errors.exchange_errors import (
@@ -15,6 +15,7 @@ from trading_bot.core.errors.exchange_errors import (
 from trading_bot.core.errors.strategy_errors import (
     StrategyError,
     InvalidTransitionError,
+    GuardConditionError,
     ConfigurationError,
 )
 
@@ -25,5 +26,6 @@ __all__ = [
     "ExchangeTimeoutError",
     "StrategyError",
     "InvalidTransitionError",
+    "GuardConditionError",
     "ConfigurationError",
 ]

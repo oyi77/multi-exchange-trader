@@ -88,14 +88,13 @@ class SimulatorExchange:
         position = Position(
             id=str(self.position_counter),
             symbol=symbol,
-            side=pos_side,
+            side=pos_side,  # store enum for backward compat; compare w/ .value for string
             entry_price=entry_price,
             amount=volume,
             current_price=self.current_price,
             unrealized_pnl=0.0,
             sl=sl if sl else 0.0,
             tp=tp if tp else 0.0,
-            open_time=int(time.time()),
         )
 
         self.positions.append(position)
@@ -177,7 +176,8 @@ class SimulatorExchange:
         # Check SL/TP and Update Position PnL
         for pos in self.positions:
             pos.current_price = self.current_price
-            pos.unrealized_pnl = calculate_profit(str(pos.side.value), pos.entry_price, self.current_price, pos.amount)
+            pos_side_str = pos.side.value if hasattr(pos.side, 'value') else pos.side
+            pos.unrealized_pnl = calculate_profit(pos_side_str, pos.entry_price, self.current_price, pos.amount)
 
         self._check_triggers()
 
@@ -187,16 +187,23 @@ class SimulatorExchange:
 
             # Check SL
             if pos.sl:
-                if str(pos.side.value).lower() == "long" and self.current_price <= pos.sl:
+                pos_side = pos.side.value if hasattr(pos.side, 'value') else pos.side
+                if pos_side.lower() == "long" and self.current_price <= pos.sl:
+                    # SL hit
+                    print(f"[SL] {pos.symbol}: {self.current_price:.2f} <= {pos.sl:.2f}")
                     self.close_position(pos.id)
-                elif str(pos.side.value).lower() == "short" and self.current_price >= pos.sl:
+                elif pos_side.lower() == "short" and self.current_price >= pos.sl:
+                    # SL hit
+                    print(f"[SL] {pos.symbol}: {self.current_price:.2f} >= {pos.sl:.2f}")
                     self.close_position(pos.id)
-
+                else:
+                    pass
             # Check TP
             if pos.tp:
-                if str(pos.side.value).lower() == "long" and self.current_price >= pos.tp:
+                pos_side2 = pos.side.value if hasattr(pos.side, 'value') else pos.side
+                if pos_side2.lower() == "long" and self.current_price >= pos.tp:
                     self.close_position(pos.id)
-                elif str(pos.side.value).lower() == "short" and self.current_price <= pos.tp:
+                elif pos_side2.lower() == "short" and self.current_price <= pos.tp:
                     self.close_position(pos.id)
 
     def update_positions(self, current_price: float):

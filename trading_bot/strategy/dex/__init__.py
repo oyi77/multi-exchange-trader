@@ -2,8 +2,17 @@
 DEX trading strategies.
 
 Strategies designed for on-chain DEX trading: token sniping,
-sandwich detection, liquidity provision, and arbitrage.
-Code from 1ai-dex-trader will be ported here in Wave 3.
+scanning, sandwich detection, liquidity provision, and arbitrage.
 """
 
-__all__: list[str] = []
+from trading_bot.strategy.dex.scanner import TokenScannerStrategy, ScannerConfig, TokenSignal
+from trading_bot.strategy.dex.sniper import TokenSniperStrategy, SniperConfig, SnipeTarget
+
+__all__ = [
+    "TokenScannerStrategy",
+    "ScannerConfig",
+    "TokenSignal",
+    "TokenSniperStrategy",
+    "SniperConfig",
+    "SnipeTarget",
+]

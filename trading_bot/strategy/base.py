@@ -16,8 +16,8 @@ class Strategy(ABC):
         self.config = config
     
     @abstractmethod
-    def on_tick(self, price: float, bid: float, ask: float, 
-                positions: List[Position], timestamp: int = None) -> Optional[Dict]:
+    def on_tick(self, price: float, bid: float, ask: float,
+                positions: List[Position], timestamp: Optional[int] = None) -> Optional[Dict]:
         """
         Returns action dict or None:
         {'action': 'open', 'side': OrderSide.BUY, 'amount': 0.1, 'sl': 50000}
